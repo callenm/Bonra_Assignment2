@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Other">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="WindowsOS">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="GameSystems">
+      <UniqueIdentifier>{409432da-d63a-46c8-b96f-8b01cfba200d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utilities">
+      <UniqueIdentifier>{0561383b-0da8-4562-96ab-09147691ce1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainLoop">
+      <UniqueIdentifier>{2a19b64c-bf0d-48b9-9296-edd9366db879}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demos">
+      <UniqueIdentifier>{55338783-215e-47ff-85a8-6e6697d9d9f9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework.cpp">
+      <Filter>WindowsOS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GameSystems\RenderSystem.cpp">
+      <Filter>GameSystems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utilities\GLFont.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MainLoop\MainLoop.cpp">
+      <Filter>MainLoop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demos\Object3D.cpp">
+      <Filter>Demos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demos\MazeDemo.cpp">
+      <Filter>Demos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demos\DisjointSet.cpp">
+      <Filter>Demos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demos\maze.cpp">
+      <Filter>Demos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demos\Polygon3D.cpp">
+      <Filter>Demos</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Framework.h">
+      <Filter>WindowsOS</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>WindowsOS</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>WindowsOS</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>WindowsOS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GameSystems\GameSystem.h">
+      <Filter>GameSystems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GameSystems\RenderSystem.h">
+      <Filter>GameSystems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utilities\Debug.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utilities\GLFont.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MainLoop\MainLoop.h">
+      <Filter>MainLoop</Filter>
+    </ClInclude>
+    <ClInclude Include="DemoBase.h">
+      <Filter>Demos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demos\DemoStub.h">
+      <Filter>Demos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demos\Object3D.h">
+      <Filter>Demos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demos\MazeDemo.h">
+      <Filter>Demos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demos\DisjointSet.h">
+      <Filter>Demos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demos\maze.h">
+      <Filter>Demos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demos\Polygon3D.h">
+      <Filter>Demos</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Framework.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="small.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="ReadMe.txt" />
+    <None Include="x.ppm">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="doublearrow.ppm">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="arrow.ppm">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Framework.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

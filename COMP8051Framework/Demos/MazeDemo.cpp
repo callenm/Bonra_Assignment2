@@ -20,7 +20,7 @@
 #include <math.h>
 #include "MainLoop\MainLoop.h"
 #include "GameSystems\RenderSystem.h"
-
+#include  "GL\glew.h"
 #include "MazeDemo.h"
 
 ///////////////////////////////////////////////////////////////////////////////	
@@ -37,6 +37,62 @@ const float cellSize = 4.0f;
 
 bool MazeDemo::Initialize()
 {
+	//initial GLEW
+	glewInit();
+
+	if (GL_TRUE != glewGetExtension("GL_ARB_fragment_shader"))
+	{
+		::MessageBox(NULL, "GL_ARB_fragment_shader extension is not available!", "ERROR", MB_OK);
+		return false;
+	}
+	if (GL_TRUE != glewGetExtension("GL_ARB_vertex_shader"))
+	{
+		::MessageBox(NULL, "GL_ARB_vertex_shader extension is not available!", "ERROR", MB_OK);
+		return false;
+	}
+	if (GL_TRUE != glewGetExtension("GL_ARB_shader_objects"))
+	{
+		::MessageBox(NULL, "GL_ARB_shader_objects extension is not available!", "ERROR", MB_OK);
+		return false;
+	}
+	if (!GLEW_VERSION_2_0)
+	{
+		::MessageBox(NULL, "INFO: OpenGL 2.0 not supported. Exit\n", "ERROR", MB_OK);
+		return false;
+	}
+
+	char *vsSource, *fsSource;
+	if (!ReadShaderFile("passthrough.vert", &vsSource))
+		return false;
+	if (!ReadShaderFile("passthrough.frag", &fsSource))
+		return false;
+
+	vs = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vs, 1, (const GLchar **)&vsSource, NULL);
+	glCompileShader(vs);
+	if (CheckGLError(true))
+		return false;
+
+	fs = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fs, 1, (const GLchar **)&fsSource, NULL);
+	glCompileShader(fs);
+	if (CheckGLError(true))
+		return false;
+
+	free(vsSource);
+	free(fsSource);
+
+	sp = glCreateProgram();
+	glAttachShader(sp, vs);
+	glAttachShader(sp, fs);
+	glLinkProgram(sp);
+	if (CheckGLError())
+		return false;
+	glUseProgram(sp);
+	if (CheckGLError())
+		return false;
+
+//old code of the framework
 	USES_CONVERSION;
 
 	theMaze = NULL;
@@ -49,6 +105,34 @@ bool MazeDemo::Initialize()
 
 	InitTextures();
 
+	//load shader files
+#pragma region 
+	//char *vsSource, *fsSource;
+	//if (!ReadShaderFile("passthrough.vert", &vsSource))
+	//	return false;
+	//if (!ReadShaderFile("passthrough.frag", &fsSource))
+	//	return false;
+
+	//vs = glCreateShader(GL_VERTEX_SHADER);
+	//glShaderSource(vs, 1, (const GLchar **)&vsSource, NULL);
+	//glCompileShader(vs);
+	//if (CheckGLError(true))
+	//	return false;
+
+	//fs = glCreateShader(GL_FRAGMENT_SHADER);
+	//glShaderSource(fs, 1, (const GLchar **)&fsSource, NULL);
+	//glCompileShader(fs);
+	//if (CheckGLError(true))
+	//	return false;
+
+	//free(vsSource);
+	//free(fsSource);
+
+	//sp = glCreateProgram();
+	//glAttachShader(sp, vs);
+	//glAttachShader(sp, fs);
+	//
+#pragma endregion load shader files
 	return true;
 }
 
@@ -184,8 +268,15 @@ bool MazeDemo::Render()
 	glRotatef(angle, 0.0, 1.0, 0.0);
 	glTranslatef(-currx, curry, -currz);
 
-	DrawMaze();
 
+	DrawMaze();
+	/*glColor3f(0, 1, 0);
+	glBegin(GL_POLYGON);
+	glVertex3f(-.5f, -.5f, 0);
+	glVertex3f(.5f, -.5f, 0);
+	glVertex3f(.5f, .5f, 0);
+	glVertex3f(-.5f, .5f, 0);
+	glEnd();*/
 	return true;
 }
 
@@ -379,3 +470,74 @@ void MazeDemo::SelectTexture(bool leftWall, bool rightWall, float dblAngle, floa
 	}
 	glMatrixMode(GL_MODELVIEW);
 }
+
+#pragma region 
+bool MazeDemo::ReadShaderFile(const char *fileName, char **srcCodeString)
+{
+	char msg[1024];
+	FILE *fd = fopen(fileName, "r");
+	if (fd == NULL)
+	{
+		sprintf(msg, "Cannot open shader file '%s' for reading!\n", fileName);
+		::MessageBox(NULL, msg, "Shader Error!", MB_OK);
+		return false;
+	}
+
+	fseek(fd, 0, SEEK_END);
+	long len = ftell(fd);
+	fseek(fd, 0, SEEK_SET);
+
+	*srcCodeString = (char *)malloc(len * sizeof(char));
+	if (*srcCodeString == NULL)
+	{
+		sprintf(msg, "Cannot allocate memory for reading in file '%s'!\n", fileName);
+		::MessageBox(NULL, msg, "Shader Error!", MB_OK);
+		return false;
+	}
+
+	long r = fread(*srcCodeString, sizeof(char), len, fd);
+	(*srcCodeString)[r - 1] = '\0';
+
+	fclose(fd);
+
+	return true;
+}
+
+
+bool MazeDemo::CheckGLError(bool checkShader)
+{
+	GLint glStatus;
+	GLchar *glErrorMsg;
+	GLsizei glErrLen;
+
+	if (checkShader)
+	{
+		glGetShaderiv(vs, GL_COMPILE_STATUS, &glStatus);
+		if (glStatus == GL_FALSE)
+		{
+			glGetShaderiv(vs, GL_INFO_LOG_LENGTH, &glErrLen);
+			glErrorMsg = (GLchar *)malloc((glErrLen + 50)*sizeof(char));
+			sprintf(glErrorMsg, "%s\n", "Failed to compile the shader!");
+			glGetShaderInfoLog(vs, glErrLen, NULL, &glErrorMsg[strlen(glErrorMsg)]);
+			::MessageBoxA(NULL, glErrorMsg, "GL Error", MB_OK);
+			free(glErrorMsg);
+			return true;
+		}
+	}
+
+	GLenum err;
+	err = glGetError();
+	if (err == GL_INVALID_OPERATION)
+	{
+		glErrorMsg = (GLchar *)malloc((glErrLen + 50)*sizeof(char));
+		sprintf(glErrorMsg, "%s\n", "Invalid operation!");
+		glGetShaderInfoLog(vs, glErrLen, NULL, &glErrorMsg[strlen(glErrorMsg)]);
+		::MessageBoxA(NULL, glErrorMsg, "GL Error", MB_OK);
+		free(glErrorMsg);
+		return true;
+	}
+
+	return false;
+}
+
+#pragma endregion supporting methods

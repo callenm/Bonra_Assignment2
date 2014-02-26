@@ -125,6 +125,8 @@
     <None Include="arrow.ppm">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="passthrough.frag" />
+    <None Include="passthrough.vert" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Framework.rc">

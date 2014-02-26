@@ -8,7 +8,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////	
 
-
+//#include <include\GL\glew.h>
 #include <GL/GL.h>
 
 #include <fstream>
@@ -18,6 +18,7 @@
 
 typedef struct
 {
+	
 	GLfloat v[3], tc[2];
 	GLfloat color[3];
 } Vertex;
@@ -30,7 +31,7 @@ public:
 
 	// Add a vertex to the polygon (assumes vertices are all on same plane).
 	void AddVertex(Vertex v);
-
+	
 	// Draw the polygon on the screen.
 	void Draw();
 

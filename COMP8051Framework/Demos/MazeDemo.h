@@ -14,11 +14,15 @@
 
 #ifndef MAZEDEMO_H
 #define MAZEDEMO_H
+
 #include "Demos/DemoBase.h"
 #include "Demos/Object3D.h"
 #include "maze.h"
+
+//#include <include\GL\glew.h>
 #include <gl\gl.h>
 #include <gl\glu.h>
+
 
 using namespace std;
 
@@ -63,6 +67,16 @@ private:
 	void InitTextures();
 	bool ReadPPMImage(char *ppmFileName, PPMImage &img);
 	void SelectTexture(bool leftWall, bool rightWall, float dblAngle, float singleAngle);
+
+
+# pragma region
+	int vs, fs, sp;					// vertex and fragment shaders and shader program
+
+	// Reads in a shader file and stores the code in a string
+	bool ReadShaderFile(const char *fileName, char **srcCodeString);
+	bool CheckGLError(bool checkShader = false);
+
+#pragma endregion for loading shader files
 
 };
 

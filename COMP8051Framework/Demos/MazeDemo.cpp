@@ -92,6 +92,11 @@ bool MazeDemo::Initialize()
 	if (CheckGLError())
 		return false;
 
+	//ambient color changing
+	glUniform1f(glGetUniformLocation(sp, "colorMultiplier"), 1.0f);
+
+
+
 //old code of the framework
 	USES_CONVERSION;
 
@@ -105,34 +110,7 @@ bool MazeDemo::Initialize()
 
 	InitTextures();
 
-	//load shader files
-#pragma region 
-	//char *vsSource, *fsSource;
-	//if (!ReadShaderFile("passthrough.vert", &vsSource))
-	//	return false;
-	//if (!ReadShaderFile("passthrough.frag", &fsSource))
-	//	return false;
 
-	//vs = glCreateShader(GL_VERTEX_SHADER);
-	//glShaderSource(vs, 1, (const GLchar **)&vsSource, NULL);
-	//glCompileShader(vs);
-	//if (CheckGLError(true))
-	//	return false;
-
-	//fs = glCreateShader(GL_FRAGMENT_SHADER);
-	//glShaderSource(fs, 1, (const GLchar **)&fsSource, NULL);
-	//glCompileShader(fs);
-	//if (CheckGLError(true))
-	//	return false;
-
-	//free(vsSource);
-	//free(fsSource);
-
-	//sp = glCreateProgram();
-	//glAttachShader(sp, vs);
-	//glAttachShader(sp, fs);
-	//
-#pragma endregion load shader files
 	return true;
 }
 
@@ -270,13 +248,7 @@ bool MazeDemo::Render()
 
 
 	DrawMaze();
-	/*glColor3f(0, 1, 0);
-	glBegin(GL_POLYGON);
-	glVertex3f(-.5f, -.5f, 0);
-	glVertex3f(.5f, -.5f, 0);
-	glVertex3f(.5f, .5f, 0);
-	glVertex3f(-.5f, .5f, 0);
-	glEnd();*/
+
 	return true;
 }
 

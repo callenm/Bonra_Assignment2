@@ -31,6 +31,7 @@
 
 const int mazeSize = 4;
 const float cellSize = 4.0f;
+bool isNightTime = false;
 
 ///////////////////////////////////////////////////////////////////////////////	
 // Methods
@@ -122,6 +123,19 @@ void MazeDemo::Purge()
 
 bool MazeDemo::Update(float elapsedTime)
 {
+	if (!isNightTime)
+	{
+		glUniform1f(glGetUniformLocation(sp, "colorMultiplier"), 1.0f);
+		//isNightTime = true;
+	}
+	else
+	{
+		glUniform1f(glGetUniformLocation(sp, "colorMultiplier"), 0.3f);
+		//isNightTime = false;
+	}
+	
+
+
 	int curRow = (int)(currz / cellSize);
 	int curCol = (int)(currx / cellSize);
 	bool inMaze = (curRow >= 0) && (curRow < theMaze->cols) && (curCol >= 0) && (curCol < theMaze->rows);
@@ -228,6 +242,17 @@ bool MazeDemo::Update(float elapsedTime)
 		walkThroughWalls = false;
 		MainLoop::Get()->keys['W'] = false;
 	}
+
+	if (MainLoop::Get()->keys['L'] && !isNightTime) {
+		isNightTime = true;
+		MainLoop::Get()->keys['L'] = false;
+	}
+	else if (MainLoop::Get()->keys['L'] && isNightTime)
+	{
+		isNightTime = false;
+		MainLoop::Get()->keys['L'] = false;
+	}
+
 
 	return true;
 }
